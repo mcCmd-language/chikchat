@@ -1,0 +1,29 @@
+{
+  "name": "chikchat",
+  "version": "0.0.1",
+  "description": "chat app",
+  "main": "./bin/index.js",
+  "author": "minyee2913, misilelab",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "compile": "tsc",
+    "start": "tsc && npx electron .",
+    "build:osx": "electron-builder --mac",
+    "build:linux": "npm run build:linux32 && npm run build:linux64",
+    "build:linux32": "electron-builder --linux --ia32",
+    "build:linux64": "electron-builder --linux --x64",
+    "build:win": "npm run build:win32 && npm run build:win64",
+    "build:win32": "electron-builder --win portable --ia32",
+    "build:win64": "electron-builder --win portable --x64"
+  },
+  "dependencies": {
+    "@types/node": "^20.9.3",
+    "typescript": "^5.3.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "electron-builder": "^24.6.4",
+    "electron": "^27.1.0"
+  }
+}

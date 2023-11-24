@@ -706,6 +706,11 @@
   "resolved" "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz"
   "version" "4.0.0"
 
+"eslist@^1.0.0-beta.1":
+  "integrity" "sha512-E62RN0l1yuH9O/RRdnB+MYTqB9/oPIc+0Y6N5HMzwTQJ1T4uAdGQS0S97E8UGsT/hCncv0NduaJztsnRRGkpVw=="
+  "resolved" "https://registry.npmjs.org/eslist/-/eslist-1.0.0-beta.1.tgz"
+  "version" "1.0.0-beta.1"
+
 "extract-zip@^2.0.1":
   "integrity" "sha512-GDhU9ntwuKyGXdZBUgTIe+vXnWj0fppUEtMDL0+idd5Sta8TGpHssn/eusA9mrPr9qNDym6SxAYZjNvCn/9RBg=="
   "resolved" "https://registry.npmjs.org/extract-zip/-/extract-zip-2.0.1.tgz"

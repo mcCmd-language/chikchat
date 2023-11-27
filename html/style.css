@@ -243,6 +243,19 @@ body {
 
 .chat .messages-chat {
   padding: 25px 35px;
+  overflow: auto;
+  height: 73vh;
+}
+
+.messages-chat::-webkit-scrollbar {
+  width: 5px;
+}
+.messages-chat::-webkit-scrollbar-thumb {
+  background-color: gray;
+  background-clip: padding-box;
+}
+.messages-chat::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.884)
 }
 
 .chat .messages-chat .message {
@@ -303,7 +316,7 @@ body {
 
 .response {
   float: right;
-  margin-right: 0px !important;
+  margin-right: -5% !important;
   margin-left:auto; /* flexbox alignment rule */
 }
 

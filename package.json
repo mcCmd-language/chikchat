@@ -4,7 +4,7 @@
   "description": "chat app",
   "main": "./bin/index.js",
   "author": "minyee2913, misilelab",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "private": false,
   "scripts": {
     "compile": "tsc",

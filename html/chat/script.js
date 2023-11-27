@@ -110,10 +110,12 @@ function updateChatData(msgs_) {
                 photo.style.backgroundImage = 
                 "url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80)";
 
-                message.appendChild(photo);
+                message.appendChild(text);
                 
                 const name = document.createElement("b");
                 name.className = "name";
+
+                message.className += " text-only";
                 
                 message.appendChild(name);
                 message.appendChild(text);

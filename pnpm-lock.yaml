@@ -11,6 +11,9 @@ dependencies:
   axios:
     specifier: ^1.6.2
     version: 1.6.2
+  electron-log:
+    specifier: ^5.0.1
+    version: 5.0.1
   eslist:
     specifier: ^1.0.0-beta.1
     version: 1.0.0-beta.1
@@ -765,6 +768,11 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /electron-log@5.0.1:
+    resolution: {integrity: sha512-x4wnwHg00h/onWQgjmvcdLV7Mrd9TZjxNs8LmXVpqvANDf4FsSs5wLlzOykWLcaFzR3+5hdVEQ8ctmrUxgHlPA==}
+    engines: {node: '>= 14'}
+    dev: false
 
   /electron-publish@24.8.1:
     resolution: {integrity: sha512-IFNXkdxMVzUdweoLJNXSupXkqnvgbrn3J4vognuOY06LaS/m0xvfFYIf+o1CM8if6DuWYWoQFKPcWZt/FUjZPw==}

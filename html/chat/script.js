@@ -1,8 +1,13 @@
 let chatData = [];
+let selected = null;
 ipcRenderer.on("responseChatData", (ev, arg1)=>{
     let response = IchatResponse;
     response = arg1;
 
+    Users = response.users;
+    chatData = response.messages;
+
+    updateUsers(response.users);
     updateChatData(response.messages);
 });
 
@@ -28,7 +33,7 @@ document.getElementById("write_message").addEventListener("keypress", (ev)=>{
     if (ev.shiftKey) {
         return;
     }
-    ipcRenderer.send("requestChatSend", msg.value);
+    ipcRenderer.send("requestChatSend", msg.value, selected);
 
     msg.value = "";
     ev.returnValue = false;
@@ -43,12 +48,16 @@ ipcRenderer.on("responseChatSend", (ev, arg1)=>{
     let response = IchatResponse;
     response = arg1;
 
+    chatData = response.messages;
     updateChatData(response.messages);
 
     content.scrollTo(0, content.scrollHeight);
 });
 
+
 const content = document.getElementById("chat_content");
+const connectedUsers = document.getElementById("connected_users");
+
 
 function updateChatData(msgs_) {
     let msg = [
@@ -57,9 +66,10 @@ function updateChatData(msgs_) {
             msg: "string",
             isMine: false,
             time: 0,
+            sendTo: "string",
         },
     ];
-    msg = msgs_;
+    msg = msgs_.filter((v)=>(v.user.name === selected && !v.isMine) || (v.isMine && v.sendTo === selected));
 
     content.innerHTML = "";
 
@@ -110,19 +120,19 @@ function updateChatData(msgs_) {
                 photo.style.backgroundImage = 
                 "url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80)";
 
-                message.appendChild(text);
+                message.appendChild(photo);
                 
                 const name = document.createElement("b");
                 name.className = "name";
 
-                message.className += " text-only";
+                //message.className += " text-only";
+
+                text.className = "text_name";
                 
                 message.appendChild(name);
                 message.appendChild(text);
 
                 name.innerHTML = v.user.name;
-
-                text.className += "_name";
 
                 showProfile = false;
             } else {
@@ -135,3 +145,73 @@ function updateChatData(msgs_) {
         text.innerHTML = v.msg;
     });
 }
+
+function updateUsers(users_) {
+    let users = [Iuser];
+    users = users_;
+
+    connectedUsers.innerHTML = "";
+
+    users.forEach((v)=>{
+        const tag = document.createElement("div");
+        tag.className = "discussion";
+
+        tag.addEventListener("click", (ev)=>{
+            selected = v.name;
+
+            console.log("wow");
+
+            updateChatData(chatData);
+        });
+        
+        //프로필 사진
+        const photo = document.createElement("div");
+        photo.className = "photo";
+        photo.style.backgroundImage = "url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80)";
+
+        tag.appendChild(photo);
+
+        //이름과 소개정보
+        const contact = document.createElement("div");
+        contact.className = "desc-contact";
+
+        const name = document.createElement("p");
+        name.className = "name";
+        contact.appendChild(name);
+
+        const desc = document.createElement("p");
+        desc.className = "message";
+        contact.appendChild(desc);
+
+        tag.appendChild(contact);
+
+        //console.log(contact);
+
+        connectedUsers.appendChild(tag);
+
+        name.innerText = v.name;
+        desc.innerHTML = v.description;
+    });
+}
+
+//interface
+const Iuser = {
+    name: "string",
+    description: "string",
+};
+
+let Users = [Iuser];
+
+const Imessage = {
+    user: Iuser,
+    msg: "string",
+};
+
+const IchatResponse = {
+    users: [
+        Iuser
+    ],
+    messages: [
+        Imessage,
+    ],
+};

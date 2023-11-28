@@ -10,6 +10,9 @@ export function createWindow () {
             height: 720,
             minHeight:600,
             minWidth: 1000,
+            center: true,
+            autoHideMenuBar: true,
+            titleBarStyle: "hidden",
             webPreferences: {
                 nodeIntegration: true,
                 contextIsolation: false,

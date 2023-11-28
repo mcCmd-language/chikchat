@@ -6,6 +6,13 @@ body {
   font-family: Pretendard;
 }
 
+.titlebar {
+  background-color: rgb(221, 221, 221);
+  width: 100vw;
+  height: 20px;
+  -webkit-app-region: drag;
+}
+
 .container {
   margin: 0;
   background-color: #FFF; 
@@ -280,6 +287,7 @@ body {
   margin-left: 10px;
   margin-top: -20px;
   font-size: 15px;
+  width: 60px;
 }
 
 .chat .messages-chat .text {
@@ -316,7 +324,7 @@ body {
 
 .response {
   float: right;
-  margin-right: -5% !important;
+  margin-right: 0% !important;
   margin-left:auto; /* flexbox alignment rule */
 }
 

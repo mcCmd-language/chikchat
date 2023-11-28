@@ -28,7 +28,7 @@ ipcMain.on("requestHomeData", async (ev)=>{
     });
 });
 
-MainData.instance.addUser("watashi");
+MainData.instance.addUser("watashi222222222222222");
 MainData.instance.addUser("ny64");
 MainData.instance.addUser("misilelab");
 MainData.instance.addUser("minyee2913", "ㅋㅋㅋㅋㅋ", true);

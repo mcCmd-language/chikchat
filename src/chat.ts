@@ -2,6 +2,9 @@ import { ipcMain } from "electron";
 import { User } from "./user";
 import { MainData } from "./main";
 import { win } from "./window";
+import axios from "axios";
+
+const URL = "http://localhost:21000";
 
 interface message {
     user: User;
@@ -51,7 +54,7 @@ ipcMain.on("requestChatData", async (ev)=>{
     });
 });
 
-ipcMain.on("requestChatSend", (ev, arg1, arg2)=>{
+ipcMain.on("requestChatSend", async (ev, arg1, arg2)=>{
     ChatData.instance.messages.push(
         {
             user: MainData.instance.myAccount!,
@@ -61,6 +64,14 @@ ipcMain.on("requestChatSend", (ev, arg1, arg2)=>{
             time: Date.now(),
         },
     );
+
+    await axios.post(URL + "/msg", {
+        headers: {
+            from: MainData.instance.myAccount!.name,
+            to: arg2,
+            content: arg1,
+        }
+    });
 
     ev.reply("responseChatSend", {
         messages: ChatData.instance.messages,

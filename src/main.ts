@@ -1,6 +1,8 @@
 import { ipcMain } from "electron";
 import { User } from "./user";
 import { win } from "./window";
+import axios from "axios";
+import { api_url } from "./chat";
 
 export class MainData {
     public static instance: MainData = new MainData();
@@ -34,17 +36,17 @@ ipcMain.on("requestHomeData", async (ev)=>{
     ev.reply("responseHomeData", MainData.instance.myAccount);
 });
 
-MainData.instance.addUser("watashi222222222222222", "who");
-MainData.instance.addUser("ny64", "ny");
-MainData.instance.addUser("misilelab", "misile");
-MainData.instance.addUser("이강민", "minyee2913", "ㅋㅋㅋㅋㅋ", "minyee2913*", true);
-
-ipcMain.on("changeDescrip", (ev, arg)=>{
+ipcMain.on("changeDescrip", async (ev, arg)=>{
   if (!MainData.instance.myAccount) return;
 
   MainData.instance.myAccount.description = arg;
 
-  //바뀐 소개문 서버에도 할당
+  await axios.post(api_url + "/update_desc", {}, {
+    headers: {
+      "accid": MainData.instance.myAccount.id,
+      "description": MainData.instance.myAccount.description
+    }
+  })
 });
 
 ipcMain.on('minimizeApp', ()=>{

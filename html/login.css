@@ -1,0 +1,43 @@
+.login-wrapper{
+    width: 600px;
+    height: 350px;
+    padding: 40px;
+    padding-top: 10%;
+    box-sizing: border-box;
+    margin : 0 auto;
+
+}
+.login-wrapper > h2{
+    font-size: 20px;
+    color: #4768b5;
+    margin-bottom: 20px;
+}
+
+#login-form > input{
+    width: 100%;
+    height: 48px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    border: 0;
+    background-color: #F8F8F8;
+}
+#login-form > input::placeholder{
+    color: #D2D2D2;
+}
+#login-form > input[type="submit"]{
+    color: #fff;
+    font-size: 16px;
+    background-color: #4768b5;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+#onError {
+    background-color: red;
+    padding: 20px;
+    width: 100vw;
+    color: white;
+    display: none;
+}

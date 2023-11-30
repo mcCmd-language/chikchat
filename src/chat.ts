@@ -3,10 +3,9 @@ import { User } from "./user";
 import { MainData } from "./main";
 import { win } from "./window";
 import axios from "axios";
-import * as log from "electron-log"; 
-import { error } from "console";
+import { escape } from "querystring";
 
-const URL = "http://0.0.0.0:21000";
+const URL = "https://backend.misilelaboratory.xyz";
 
 interface message {
     user: User;
@@ -51,15 +50,17 @@ ChatData.instance.messages.push(
 ipcMain.on("requestChatData", async (ev)=>{
     await win.loadFile("./html/chat/index.html");
     ev.reply("responseChatData", {
-        users: MainData.instance.users,
+        users: MainData.instance.users.map((v)=>v.withoutPw()),
         messages: ChatData.instance.messages,
-    });
+    }, MainData.instance.myAccount!.id);
 });
 
 ipcMain.on("requestChatSend", async (ev, arg1, arg2)=>{
+    if (!MainData.instance.myAccount) return;
+
     ChatData.instance.messages.push(
         {
-            user: MainData.instance.myAccount!,
+            user: MainData.instance.myAccount.withoutPw(),
             msg: arg1,
             isMine: true,
             sendTo: arg2,
@@ -67,14 +68,19 @@ ipcMain.on("requestChatSend", async (ev, arg1, arg2)=>{
         },
     );
 
-    log.info(`data: ${JSON.stringify(MainData.instance.myAccount)}, ${arg1}`);
-    await axios.post(`${URL}/msg`, {}, {
-                    headers: {from: MainData.instance.myAccount!.name,
-                    to: "b",
-                    content: arg1}
-    })
-
     ev.reply("responseChatSend", {
         messages: ChatData.instance.messages,
     });
+
+    await axios.post(`${URL}/msg`, {}, 
+    JSON.parse(JSON.stringify(
+        {
+            headers: {
+                from: MainData.instance.myAccount.encode().id,
+                to: escape(arg2),
+                content: escape(arg1),
+            }
+        }
+    )),
+    );
 });

@@ -18,6 +18,7 @@
     "build:win64": "electron-builder --win portable --x64"
   },
   "dependencies": {
+    "@joeattardi/emoji-button": "^4.6.4",
     "@types/node": "^20.9.3",
     "axios": "^1.6.2",
     "electron-log": "^5.0.1",

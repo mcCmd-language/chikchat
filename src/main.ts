@@ -8,43 +8,59 @@ export class MainData {
     public users: User[] = [];
     public myAccount?: User;
 
-    addUser(name: string, description = "", isMine = false): void {
-        const obj = new User(name, description);
+    addUser(obj: User, isMine: boolean): void;
+    addUser(name: string, id:string, description?: string, pw?: string, isMine?: boolean): void;
+    addUser(obj_name: string | User, id_mine?:string | boolean, description = "", pw?: string, isMine = false): void {
+      if (obj_name instanceof User) {
+        if (id_mine) {
+          this.myAccount = obj_name;
+        }
+        this.users.push(obj_name);
+
+        return;
+      } else {
+        const obj = new User(obj_name, id_mine as string, description, pw);
 
         if (isMine) {
-            this.users.unshift(obj);
-
             this.myAccount = obj;
-        } else {
-            this.users.push(obj);
         }
+        this.users.push(obj);
+      }
     }
 }
 
 ipcMain.on("requestHomeData", async (ev)=>{
     await win.loadFile("./html/home/index.html");
-    ev.reply("responseHomeData", {
-        users: MainData.instance.users,
-    });
+    ev.reply("responseHomeData", MainData.instance.myAccount);
 });
 
-MainData.instance.addUser("watashi222222222222222");
-MainData.instance.addUser("ny64");
-MainData.instance.addUser("misilelab");
-MainData.instance.addUser("minyee2913", "ㅋㅋㅋㅋㅋ", true);
+MainData.instance.addUser("watashi222222222222222", "who");
+MainData.instance.addUser("ny64", "ny");
+MainData.instance.addUser("misilelab", "misile");
+MainData.instance.addUser("이강민", "minyee2913", "ㅋㅋㅋㅋㅋ", "minyee2913*", true);
+
+ipcMain.on("changeDescrip", (ev, arg)=>{
+  if (!MainData.instance.myAccount) return;
+
+  MainData.instance.myAccount.description = arg;
+});
 
 ipcMain.on('minimizeApp', ()=>{
     win.minimize();
-  })
+  });
 
-  ipcMain.on('maximizeApp', ()=>{
-    if(win.isMaximized()){
-      win.restore();
-    } else {
-      win.maximize();
-    }
-  })
+ipcMain.on('maximizeApp', (ev)=>{
+  if(win.isMaximized()){
+    win.restore();
 
-  ipcMain.on('closeApp', ()=>{
-    win.close();
-  })
+    ev.reply("after_maximize", false);
+  } else {
+    win.maximize();
+
+    ev.reply("after_maximize", true);
+  }
+});
+
+ipcMain.on('closeApp', ()=>{
+  win.close();
+});

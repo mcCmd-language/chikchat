@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import { MainData } from "./main";
+import Logger from "electron-log";
 
 app.disableHardwareAcceleration();
 
@@ -24,5 +25,5 @@ export function createWindow () {
     win.webContents.toggleDevTools();
 
     win.setMenu(null);
-    win.loadFile('./html/home/index.html');
+    win.loadFile('./html/login/index.html');
 }

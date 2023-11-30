@@ -2,17 +2,17 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Call</title>
   <script src="https://kit.fontawesome.com/bd62d7c2a9.js" crossorigin="anonymous"></script>
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat'>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'><link rel="stylesheet" href="../style.css">
 
 </head>
 <body>
+  <div class="drag"></div>
   <div class="titlebar">
-    <b class="title">Call</b>
+    <b class="title">ChikChat</b>
     <i class="fa-solid fa-square-minus fa-lg window" id="minimize_window"></i>
-    <i class="fa-solid fa-square-up-right fa-lg window" id="maximize_window"></i>
+    <i class="fa-solid fa-square-caret-up fa-lg window" id="maximize_window"></i>
     <i class="fa-solid fa-rectangle-xmark fa-lg window" id="close_window"></i>
   </div>
   <div class="container">
@@ -39,8 +39,16 @@
           </li>
         </ul>
       </nav>
+
+      <section id="home_section">
+        <a id="username">username</a>
+        <b id="tag" style="color: gray; margin-left: 5px; font-size: 150%;"></b>
+        <br>
+        <br>소개:<br><input type="text" name="description" id="descrip">
+      </section>
     </div>
   </div>
+  <script src="../titlebar.js"></script>
   <script src="./script.js"></script>
   <script src="../menu.js"></script>
 </body>

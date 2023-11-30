@@ -1,11 +1,15 @@
 let chatData = [];
 let selected = null;
-ipcRenderer.on("responseChatData", (ev, arg1)=>{
+let myAccount = null;
+
+ipcRenderer.on("responseChatData", (ev, arg1, my)=>{
     let response = IchatResponse;
     response = arg1;
 
     Users = response.users;
     chatData = response.messages;
+
+    myAccount = my;
 
     updateUsers(response.users);
     updateChatData(response.messages);
@@ -60,18 +64,23 @@ const connectedUsers = document.getElementById("connected_users");
 
 
 function updateChatData(msgs_) {
+    content.innerHTML = "";
+    if (selected === null) {
+        document.getElementById("footer").style.display = "none";
+        return;
+    }
+    document.getElementById("footer").style.display = "block";
+
     let msg = [
         {
-            user: {},
+            user: Iuser,
             msg: "string",
             isMine: false,
             time: 0,
             sendTo: "string",
         },
     ];
-    msg = msgs_.filter((v)=>(v.user.name === selected && !v.isMine) || (v.isMine && v.sendTo === selected));
-
-    content.innerHTML = "";
+    msg = msgs_.filter((v)=>(v.user.id === selected && !v.isMine) || (v.isMine && v.sendTo === selected));
 
     let showProfile = true;
     let lastResTime = 0;
@@ -152,14 +161,13 @@ function updateUsers(users_) {
 
     connectedUsers.innerHTML = "";
 
-    users.forEach((v)=>{
+    users.filter((v)=>v.id !== myAccount).forEach((v)=>{
         const tag = document.createElement("div");
         tag.className = "discussion";
 
         tag.addEventListener("click", (ev)=>{
-            selected = v.name;
-
-            console.log("wow");
+            selected = v.id;
+            document.getElementById("chatName").innerHTML = v.name;
 
             updateChatData(chatData);
         });
@@ -197,6 +205,7 @@ function updateUsers(users_) {
 //interface
 const Iuser = {
     name: "string",
+    id: "string",
     description: "string",
 };
 

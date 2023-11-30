@@ -2,18 +2,17 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Call</title>
   <script src="https://kit.fontawesome.com/bd62d7c2a9.js" crossorigin="anonymous"></script>
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat'>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'><link rel="stylesheet" href="../style.css">
 
 </head>
 <body>
+  <div class="drag"></div>
   <div class="titlebar">
-    <b class="title">Call</b>
-    <p class="drag"></p>
+    <b class="title">ChikChat</b>
     <i class="fa-solid fa-square-minus fa-lg window" id="minimize_window"></i>
-    <i class="fa-solid fa-square-up-right fa-lg window" id="maximize_window"></i>
+    <i class="fa-solid fa-square-caret-up fa-lg window" id="maximize_window"></i>
     <i class="fa-solid fa-rectangle-xmark fa-lg window" id="close_window"></i>
   </div>
   <div class="container">
@@ -54,7 +53,7 @@
       <section class="chat">
         <div class="header-chat">
           <i class="icon fa fa-user-o" aria-hidden="true"></i>
-          <p class="name">채팅</p>
+          <b class="name" id="chatName">채팅</b>
           <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
         </div>
         <div class="messages-chat", id="chat_content">
@@ -87,15 +86,19 @@
           </div>
           <p class="time"> 15h09</p>
         </div>
-        <div class="footer-chat">
-          <i class="icon fa fa-smile-o clickable" style="font-size:25pt;" aria-hidden="true"></i>
+        <div class="footer-chat", id="footer">
+          <emoji-picker id="picker" class="light" style="display:none; position: absolute; height: 350px; width: 400px; margin-bottom: 430px;"></emoji-picker>
+          <i class="icon fa fa-smile-o clickable" style="font-size:25pt;" aria-hidden="true" id="emoji"></i>
           <textarea class="write-message" placeholder="메시지 보내기" id="write_message"></textarea>
           <i class="icon send fa fa-paper-plane-o clickable" aria-hidden="true" id="chat_send"></i>
         </div>
       </section>
     </div>
   </div>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
+  <script src="../titlebar.js"></script>
   <script src="../menu.js"></script>
-  <script src="./script.js"></script>
+  <script charset="utf-8" src="./script.js"></script>
+  <script charset="utf-8" src="./emoji.js"></script>
 </body>
 </html>

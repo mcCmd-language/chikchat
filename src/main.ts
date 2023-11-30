@@ -33,7 +33,7 @@ export class MainData {
 
 ipcMain.on("requestHomeData", async (ev)=>{
     await win.loadFile("./html/home/index.html");
-    ev.reply("responseHomeData", MainData.instance.myAccount);
+    ev.reply("responseHomeData", MainData.instance.myAccount?.decode());
 });
 
 ipcMain.on("changeDescrip", async (ev, arg)=>{
@@ -44,9 +44,13 @@ ipcMain.on("changeDescrip", async (ev, arg)=>{
   await axios.post(api_url + "/update_desc", {}, {
     headers: {
       "accid": MainData.instance.myAccount.id,
-      "description": MainData.instance.myAccount.description
+      "description": encodeURI(arg),
     }
-  })
+  }).catch((r)=>{
+    if (r?.response?.status !== 404) {
+      throw r;
+    }
+  });
 });
 
 ipcMain.on('minimizeApp', ()=>{

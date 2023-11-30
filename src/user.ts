@@ -1,10 +1,10 @@
-import { escape } from "querystring";
 import { Manage } from "./manage";
 
-export interface EncodedUser {
+export interface IUser {
     name: string;
     id: string;
     description: string;
+    pw?: string;
     image?: string;
 }
 
@@ -22,12 +22,28 @@ export class User {
         return new User(this.name, this.id, this.description, undefined, this.image);
     }
 
-    encode(): EncodedUser {
+    encode(): IUser {
         return {
-            name: escape(this.name),
-            id: escape(this.id),
-            description: escape(this.description),
-            image: ((this.image !== undefined) ? escape(this.image) : undefined),
+            name: encodeURI(this.name),
+            id: encodeURI(this.id),
+            description: encodeURI(this.description),
+            pw: this.pw,
+            image: ((this.image !== undefined) ? encodeURI(this.image) : undefined),
+        }
+    }
+
+    decode(): IUser {
+        try {
+            return {
+                name: decodeURI(this.name),
+                id: decodeURI(this.id),
+                description: decodeURI(this.description),
+                pw: this.pw,
+                image: ((this.image !== undefined) ? decodeURI(this.image) : undefined),
+            }
+        } catch {
+            //데이터가 인코딩 되어있지 않음
+            return this;
         }
     }
 }

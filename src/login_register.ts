@@ -32,22 +32,31 @@ ipcMain.on("login", async (ev, id, pw)=>{
 
         await win.loadFile('./html/home/index.html');
 
-        ev.reply("responseHomeData", MainData.instance.myAccount);
+        ev.reply("responseHomeData", MainData.instance.myAccount.decode());
 
         await axios.get(api_url + "/msgs").then((v)=>{
             const classList: message[] = [];
             v.data.forEach((element: any) => {
+                let msg = "";
+                try {
+                    msg = decodeURI(element["text"]);
+                } catch {
+                    msg = element["text"];
+                }
                 const a = {
-                    user: MainData.instance.users.filter((x)=>{return element["from"] == x.name})[0],
-                    msg: decodeURI(element["text"]),
+                    user: MainData.instance.users.filter((x)=>{return element["from"] == x.id})[0],
+                    msg: msg,
                     time: element["time"],
                     sendTo: element["to"],
                     isMine: true
                 };
-                if (a.user.name != MainData.instance.myAccount?.name) {
-                    a.isMine = false;
+                
+                if (a.user) {
+                    if (a.user.id != MainData.instance.myAccount?.id) {
+                        a.isMine = false;
+                    }
+                    classList.push(a);
                 }
-                classList.push(a);
             });
             ChatData.instance.messages = classList;
             console.log(ChatData.instance.messages);
@@ -66,7 +75,7 @@ ipcMain.on("register", async (ev, name, id, pw)=>{
     let success = false;
     await axios.post(api_url + "/register", {}, {
         headers: {
-            "username": user.name,
+            "username": user.encode().name,
             "accid": user.id,
             "password": user.pw,
             "description": user.description
@@ -77,6 +86,7 @@ ipcMain.on("register", async (ev, name, id, pw)=>{
         ev.reply("responseLogin", "register");
     }).catch((x)=>{
         console.log(x.response);
+        if (x.response == undefined) {throw x;}
         if (x.response.status == 409) {
             ev.reply("responseRegister", "already_exist");
         } else { throw x; }

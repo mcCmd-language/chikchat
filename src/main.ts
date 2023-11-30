@@ -32,3 +32,19 @@ MainData.instance.addUser("watashi222222222222222");
 MainData.instance.addUser("ny64");
 MainData.instance.addUser("misilelab");
 MainData.instance.addUser("minyee2913", "ㅋㅋㅋㅋㅋ", true);
+
+ipcMain.on('minimizeApp', ()=>{
+    win.minimize();
+  })
+
+  ipcMain.on('maximizeApp', ()=>{
+    if(win.isMaximized()){
+      win.restore();
+    } else {
+      win.maximize();
+    }
+  })
+
+  ipcMain.on('closeApp', ()=>{
+    win.close();
+  })

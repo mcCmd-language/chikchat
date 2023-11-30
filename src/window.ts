@@ -19,7 +19,7 @@ export function createWindow () {
             }
         }
     );
-    //win.webContents.toggleDevTools();
+    win.webContents.toggleDevTools();
 
     win.setMenu(null);
     win.loadFile('./html/home/index.html');

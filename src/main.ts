@@ -36,6 +36,12 @@ ipcMain.on("requestHomeData", async (ev)=>{
     ev.reply("responseHomeData", MainData.instance.myAccount?.decode());
 });
 
+ipcMain.on("logout", async ()=>{
+  await win.loadFile("./html/login/index.html");
+  
+  MainData.instance.myAccount = undefined;
+});
+
 ipcMain.on("changeDescrip", async (ev, arg)=>{
   if (!MainData.instance.myAccount) return;
 

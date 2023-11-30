@@ -20,7 +20,10 @@ document.getElementById("chat_send").addEventListener("mousedown", ()=>{
 
     if (msg.value.length < 1) return;
 
-    ipcRenderer.send("requestChatSend", msg.value);
+    ipcRenderer.send("requestChatSend", {
+        msg: msg.value,
+        selected: selected,
+    });
 
     msg.value = "";
 });
@@ -37,7 +40,12 @@ document.getElementById("write_message").addEventListener("keypress", (ev)=>{
     if (ev.shiftKey) {
         return;
     }
-    ipcRenderer.send("requestChatSend", msg.value, selected);
+    console.log(msg.value);
+    console.log(selected);
+    ipcRenderer.send("requestChatSend", {
+        msg: msg.value,
+        selected: selected,
+    });
 
     msg.value = "";
     ev.returnValue = false;
@@ -127,7 +135,7 @@ function updateChatData(msgs_) {
                 const photo = document.createElement("div");
                 photo.className = "photo";
                 photo.style.backgroundImage = 
-                "url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80)";
+                "url(https://cdn2.vectorstock.com/i/1000x1000/17/16/default-avatar-anime-girl-profile-icon-vector-21171716.jpg)";
 
                 message.appendChild(photo);
                 
@@ -141,7 +149,15 @@ function updateChatData(msgs_) {
                 message.appendChild(name);
                 message.appendChild(text);
 
-                name.innerHTML = v.user.name;
+                let username = "";
+
+                try {
+                    username = decodeURI(v.user.name);
+                } catch {
+                    username = v.user.name;
+                }
+
+                name.innerHTML = username;
 
                 showProfile = false;
             } else {
@@ -150,8 +166,14 @@ function updateChatData(msgs_) {
                 message.appendChild(text);
             }
         }
+        let msg_ = "";
 
-        text.innerHTML = v.msg;
+        try {
+            msg_ = decodeURI(v.msg);
+        } catch {
+            msg_ = v.msg;
+        }
+        text.innerHTML = msg_;
     });
 }
 
@@ -175,7 +197,7 @@ function updateUsers(users_) {
         //프로필 사진
         const photo = document.createElement("div");
         photo.className = "photo";
-        photo.style.backgroundImage = "url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80)";
+        photo.style.backgroundImage = "url(https://cdn2.vectorstock.com/i/1000x1000/17/16/default-avatar-anime-girl-profile-icon-vector-21171716.jpg)";
 
         tag.appendChild(photo);
 

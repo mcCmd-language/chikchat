@@ -25,7 +25,7 @@ ipcMain.on("login", async (ev, id, pw)=>{
     await axios.get(api_url + "/login", {
         headers: {
             "accid": id,
-            "password": pw
+            "password": pw,
         }
     }).then(async (_)=>{
         MainData.instance.myAccount = user;

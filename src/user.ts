@@ -46,4 +46,13 @@ export class User {
             return this;
         }
     }
+
+    decodeAsClass(): User {
+        try {
+            return new User(decodeURI(this.name), decodeURI(this.id), decodeURI(this.description), this.pw, ((this.image !== undefined) ? decodeURI(this.image) : undefined));
+        } catch {
+            //데이터가 인코딩 되어있지 않음
+            return this;
+        }
+    }
 }

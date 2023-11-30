@@ -9,3 +9,7 @@ const descrip = document.getElementById("descrip");
 descrip.addEventListener("change", ()=>{
     ipcRenderer.send("changeDescrip", descrip.value);
 });
+
+document.getElementById("logout").addEventListener("click", ()=>{
+    ipcRenderer.send("logout");
+});

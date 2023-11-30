@@ -1,8 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
-import { MainData } from "./main";
-import Logger from "electron-log";
-
-app.disableHardwareAcceleration();
+import { BrowserWindow } from "electron";
 
 export let win:BrowserWindow;
 

@@ -49,10 +49,13 @@ ChatData.instance.messages.push(
 
 ipcMain.on("requestChatData", async (ev)=>{
     await win.loadFile("./html/chat/index.html");
+
     ev.reply("responseChatData", {
         users: MainData.instance.users.map((v)=>v.withoutPw()),
         messages: ChatData.instance.messages,
     }, MainData.instance.myAccount!.id);
+
+    //서버에서 유저들 받아와서 MainData.instance.users 다시 할당
 });
 
 ipcMain.on("requestChatSend", async (ev, arg1, arg2)=>{

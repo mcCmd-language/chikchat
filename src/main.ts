@@ -43,6 +43,8 @@ ipcMain.on("changeDescrip", (ev, arg)=>{
   if (!MainData.instance.myAccount) return;
 
   MainData.instance.myAccount.description = arg;
+
+  //바뀐 소개문 서버에도 할당
 });
 
 ipcMain.on('minimizeApp', ()=>{

@@ -19,13 +19,13 @@
     <div class="row">
       <nav class="menu">
         <ul class="items">
-          <li class="item item-active">
+          <li class="item">
             <i class="fa fa-home" aria-hidden="true" id="home_button"></i>
           </li>
           <li class="item">
             <i class="fa fa-user" aria-hidden="true" id="search_user_button"></i>
           </li>
-          <li class="item">
+          <li class="item item-active">
             <i class="fa fa-pencil" aria-hidden="true" id="manage_button"></i>
           </li>
           <li class="item">
@@ -36,17 +36,41 @@
           </li>
         </ul>
       </nav>
-
-      <section id="home_section">
-        <a id="username">username</a>
-        <b id="tag" style="color: gray; margin-left: 5px; font-size: 150%;"></b>
-        <br>
-        <br>소개:<br><input type="text" name="description" id="descrip">
+      
+      <section class="discussions">
+        <div class="discussion search">
+          <div class="searchbar">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input type="text" placeholder="Search..." id="search"></input>
+          </div>
+        </div>
+        <b>- 내 일정</b>
+        <div class="scroll_content" id="connected_users"></div>
+      </section>
+      <section class="chat">
+        <div class="header-chat">
+          <i class="icon fa fa-user-o" aria-hidden="true"></i>
+          <b class="name" id="chatName">일정 정보</b>
+          <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
+        </div>
+        <div class="messages-chat", id="chat_content">
+        </div>
+        <div class="footer-chat", id="footer">
+          <select id="manage_option">
+            <option>채크 박스</option>
+            <option>메모지</option>
+            <option>카운트 다운</option>
+          </select>
+          <textarea class="write-message" placeholder="일정 요소 추가" id="write_message"></textarea>
+          <i class="icon send fa fa-circle-plus clickable" aria-hidden="true" id="chat_send"></i>
+        </div>
       </section>
     </div>
   </div>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
   <script src="../titlebar.js"></script>
-  <script src="./script.js"></script>
   <script src="../menu.js"></script>
+  <script charset="utf-8" src="./script.js"></script>
+  <script charset="utf-8" src="./emoji.js"></script>
 </body>
 </html>

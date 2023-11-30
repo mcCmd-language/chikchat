@@ -1,6 +1,8 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import { MainData } from "./main";
 
+app.disableHardwareAcceleration();
+
 export let win:BrowserWindow;
 
 export function createWindow () {

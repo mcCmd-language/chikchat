@@ -1,4 +1,5 @@
 import { escape } from "querystring";
+import { Manage } from "./manage";
 
 export interface EncodedUser {
     name: string;
@@ -8,6 +9,7 @@ export interface EncodedUser {
 }
 
 export class User {
+    public manage: Manage[] = [];
     constructor(
         public name: string,
         public id: string,

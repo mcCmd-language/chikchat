@@ -16,6 +16,15 @@
     <i class="fa-solid fa-rectangle-xmark fa-lg window" id="close_window"></i>
   </div>
   <div class="container">
+    <div class="modal" id="add_manager_modal">
+      <div class="modal_body" style="width: 400px; height: 200px;">
+        <h5>새 일정의 명칭을 적으세요.</h5>
+        <input type="text" placeholder="새 일정">
+        <br>
+        <button style="background-color: gray;" class="clickable">취소</button>
+        <button style="background-color: #4768b5;" class="clickable">확인</button>
+      </div>
+    </div>
     <div class="row">
       <nav class="menu">
         <ul class="items">
@@ -44,6 +53,10 @@
             <input type="text" placeholder="Search..." id="search"></input>
           </div>
         </div>
+        <div class="discussion clickable" id="add_manage">
+          <i class="fa-solid fa-plus fa-xl"></i>
+          <b style="margin-left: 20px;"> 일정 추가하기</b>
+        </div>
         <b>- 내 일정</b>
         <div class="scroll_content" id="connected_users"></div>
       </section>
@@ -54,15 +67,44 @@
           <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
         </div>
         <div class="messages-chat", id="chat_content">
+          <div style="display: inline;">
+            채크박스: <input type="checkbox" checked>
+            <button>삭제</button>
+          </div><br>
+          <div style="display: inline;">
+            남은 기한: <a>00:00:00</a>
+            <button>수정</button>
+            <button>삭제</button>
+          </div><br>
+          <div style="display: inline;">
+            메모지: <input type="text" value="">
+            <button>삭제</button>
+          </div><br>
+          <div style="display: inline;">
+            트리거: 
+            <select>
+              <option>없음</option>
+              <option>시간이 되었을 때</option>
+              <option>모든 채크박스가 선택되었을 때</option>
+            </select>
+            <a></a>
+            <select>
+              <option>행동: 없음</option>
+              <option>행동: unknown</option>
+              <option>행동: undefined</option>
+            </select>
+            <button>삭제</button>
+          </div>
         </div>
         <div class="footer-chat", id="footer">
           <select id="manage_option">
             <option>채크 박스</option>
             <option>메모지</option>
             <option>카운트 다운</option>
+            <option>트리거</option>
           </select>
           <textarea class="write-message" placeholder="일정 요소 추가" id="write_message"></textarea>
-          <i class="icon send fa fa-circle-plus clickable" aria-hidden="true" id="chat_send"></i>
+          <i class="icon send fa fa-circle-plus clickable" aria-hidden="true" id="add_element"></i>
         </div>
       </section>
     </div>
@@ -71,6 +113,5 @@
   <script src="../titlebar.js"></script>
   <script src="../menu.js"></script>
   <script charset="utf-8" src="./script.js"></script>
-  <script charset="utf-8" src="./emoji.js"></script>
 </body>
 </html>

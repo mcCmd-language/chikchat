@@ -370,6 +370,11 @@ body {
   font-size: 14pt;
 }
 
+.chat .footer-chat #emoji {
+  position:relative;
+  bottom: 15px;
+}
+
 .chat .footer-chat .send {
   color:#fff;
   background-color: #4f6ebd;
@@ -378,6 +383,10 @@ body {
   padding: 12px 12px 12px 12px;
   border-radius: 50px;
   font-size: 14pt;
+}
+
+#chat_send {
+  margin-top: 10px;
 }
 
 .chat .footer-chat .name {
@@ -398,6 +407,7 @@ body {
   width:70%;
   height: 50px;
   margin-left: 20px;
+  margin-top: 10px;
   padding: 10px;
   resize: none;
 }
@@ -446,4 +456,78 @@ body {
   border-radius: 5px;
   width: 100%;
   height: 30px;
+}
+
+#manage_option {
+  border-radius: 10px;
+  background-color:#ebebeb;
+  border: 0;
+  margin-left: 10px;
+  width: 200;
+  height: 120;
+}
+
+#add_manage {
+  padding-left: 15px;
+  height: 80px;
+}
+
+#add_manage b {
+  -webkit-user-select: none !important;
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: none;
+
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal.show {
+  display: block;
+}
+
+.modal_body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 400px;
+  height: 600px;
+
+  padding: 40px;
+
+  text-align: center;
+
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.modal .modal_body input[type=text] {
+  border: 0;
+  background-color: rgb(247, 247, 247);
+  border-radius: 5px;
+  width: 80%;
+  height: 40px;
+  margin-top: 10px;
+}
+
+.modal .modal_body button {
+  border: 0;
+  color: white;
+  border-radius: 5px;
+  margin-top: 20px;
+  font-weight: bold;
+  margin: 15px;
+  width: 80px;
+  height: 40px;
 }

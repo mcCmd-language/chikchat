@@ -5,10 +5,10 @@ import { User } from "./user";
 import { ChatData, api_url, message } from "./chat";
 import axios from "axios";
 import { InputElement, Manage, ManageElement, TimerElement, ToggleElement, TriggerElement } from "./manage";
-import WebSocket from "ws";
 
 export async function getUsers(callback: (data: User[])=>void) {
     await axios.get(api_url + "/users").then((v)=>{
+        console.log(JSON.stringify(v.data));
         const classList: User[] = [];
         v.data.forEach((element: any) => {
             const user = new User(element["username"],element["accid"],element["description"], undefined, element["image"], [])

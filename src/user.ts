@@ -9,13 +9,13 @@ export interface IUser {
 }
 
 export class User {
-    public manage: Manage[] = [];
     constructor(
         public name: string,
         public id: string,
         public description: string,
         public pw?: string,
         public image?: string,
+        public manage: Manage[] = [],
     ) {}
 
     withoutPw(): User {

@@ -1,8 +1,9 @@
 import { ipcMain } from "electron";
-import { IUser, User } from "./user";
+import { User } from "./user";
 import { MainData } from "./main";
 import { win } from "./window";
 import axios from "axios";
+import { getUsers } from "./login_register";
 
 export const api_url = "https://backend.misilelaboratory.xyz";
 
@@ -29,13 +30,7 @@ ipcMain.on("requestChatData", async (ev)=>{
         messages: ChatData.instance.messages,
     }, MainData.instance.myAccount!.decode().id);
 
-    await axios.get(api_url + "/users").then((v)=>{
-        const classList: User[] = [];
-        v.data.forEach((element: any) => {
-            classList.push(new User(element["username"],element["accid"],element["description"], undefined, element["image"]).decodeAsClass())
-        });
-        MainData.instance.users = classList;
-    })
+    await getUsers((d)=>{MainData.instance.users = d;})
 });
 
 ipcMain.on("requestChatSend", async (ev, arg)=>{
@@ -63,10 +58,5 @@ ipcMain.on("requestChatSend", async (ev, arg)=>{
                 content: encodeURI(arg.msg),
             },
         },
-    ).catch((x)=>{
-        console.log("catch");
-        if(x.response.code !== 404){
-            throw x;
-        }
-    });
+    );
 });

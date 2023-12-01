@@ -2,7 +2,7 @@ import { ipcMain } from "electron";
 import { win } from "./window";
 import { User } from "./user";
 
-class ManageElement {
+export class ManageElement {
     constructor (
         public name: string,
     ) {}
@@ -11,22 +11,22 @@ class ManageElement {
     public value?: any;
 }
 
-class ToggleElement extends ManageElement {
+export class ToggleElement extends ManageElement {
     type = "toggle";
     value: boolean = false;
 }
 
-class InputElement extends ManageElement {
+export class InputElement extends ManageElement {
     type = "input";
     value: string = "";
 }
 
-class TimerElement extends ManageElement {
+export class TimerElement extends ManageElement {
     type = "timer";
     value: number = 0;
 }
 
-class TriggerElement extends ManageElement {
+export class TriggerElement extends ManageElement {
     type = "trigger";
     value = "actionType";
 }

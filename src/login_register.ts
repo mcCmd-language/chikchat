@@ -88,28 +88,7 @@ ipcMain.on("login", async (ev, id, pw)=>{
             });
             ChatData.instance.messages = classList;
             console.log(ChatData.instance.messages);
-        })
-
-        MainData.instance.ws = new WebSocket(api_url + "/ws");
-        MainData.instance.ws.on("open", ()=>{console.log("open");})
-        MainData.instance.ws.on("message", (a)=>{
-            if (a.toString() === "{}") {return;}
-            let e = JSON.parse(a.toString());
-            if (ChatData.instance.messages.filter((x)=>{return x.time === e["time"]})) {return;}
-            const eb = {
-              user: MainData.instance.users.filter((x)=>{return e["from"] == x.id})[0],
-              msg: e["content"],
-              time: e["time"],
-              sendTo: e["to"],
-              isMine: false
-            };
-            if (eb.user) {
-              if (eb.user.id == MainData.instance.myAccount?.id) {
-                  return;
-              }
-            }
-            ChatData.instance.messages.push(eb);
-          })
+        });
     }).catch((x)=>{
         if (x.response == undefined) {throw x;}
         if (x.response.status == 401) {

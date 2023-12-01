@@ -532,8 +532,49 @@ body {
   height: 40px;
 }
 
-.note {
+.btn-default {
+  border: 0;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+  width: 80px;
+  height: 40px;
+  background-color: #4768b5;
+}
+
+.manage_element {
   display: inline;
+  font-weight: 500;
+  -webkit-user-select: none !important;
+}
+
+.manage_element .btn-default {
+  width: 60px;
+  height: 30px;
+  color: black;
+  background-color:#E5E5E5;
+  cursor: pointer;
+}
+
+.action_elem select {
+  border-radius: 10px;
+  background-color:#ebebeb;
+  border: 0;
+  margin-left: 10px;
+  width: 200;
+  height: 120;
+}
+
+.toggle_elem input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  border: 0;
+}
+
+.header_elem b {
+  font-size: 2em;
+  margin-left: 30%;
+  margin-right: 30%;
 }
 
 .note a {
@@ -555,12 +596,30 @@ body {
   border-radius: 6px;
 }
 
-.btn-default {
-  border: 0;
-  color: white;
-  border-radius: 5px;
-  font-weight: bold;
-  width: 80px;
-  height: 40px;
-  background-color: #4768b5;
+#manages .discussion {
+  padding-left: 10%;
+  height: 80px;
+}
+
+#manages .discussion i {
+  margin-top: -2px;
+}
+
+#manages .discussion b {
+  margin-left: 10%;
+  margin-top: -2px;
+}
+
+#manages button {
+  position: fixed;
+  left: 28%;
+  color: black;
+  background-color:#E5E5E5;
+  height: 30px;
+  width: 70px;
+  font-size: 15px;
+}
+
+#manages button:hover {
+  background-color:#C0C0C0;
 }

@@ -19,10 +19,10 @@
     <div class="modal" id="add_manager_modal">
       <div class="modal_body" style="width: 400px; height: 200px;">
         <h5>새 일정의 명칭을 적으세요.</h5>
-        <input type="text" placeholder="새 일정">
+        <input type="text" placeholder="새 일정" id="add_manage_value">
         <br>
-        <button style="background-color: gray;" class="clickable">취소</button>
-        <button style="background-color: #4768b5;" class="clickable">확인</button>
+        <button style="background-color: gray;" class="clickable" id="add_manage_false">취소</button>
+        <button style="background-color: #4768b5;" class="clickable" id="add_manage_true">확인</button>
       </div>
     </div>
     <div class="row">
@@ -58,34 +58,44 @@
           <b style="margin-left: 20px;"> 일정 추가하기</b>
         </div>
         <b>- 내 일정</b>
-        <div class="scroll_content" id="connected_users"></div>
+        <div class="scroll_content" id="manages">
+          <div class="discussion clickable">
+            <i class="fa-solid fa-calendar-days fa-xl"></i>
+            <b> 일정 1</b>
+            <button class="btn-default">삭제</button>
+          </div>
+        </div>
       </section>
       <section class="chat">
         <div class="header-chat">
           <i class="icon fa fa-user-o" aria-hidden="true"></i>
-          <b class="name" id="chatName">일정 정보</b>
+          <b class="name" id="calName">일정 정보</b>
           <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
         </div>
-        <div class="messages-chat", id="chat_content">
-          <div style="display: inline;">
-            <input type="checkbox" checked> 채크박스
-            <button>삭제</button>
+        <div class="messages-chat", id="content">
+          <div class="manage_element toggle_elem">
+            <input type="checkbox" checked> 토글
+            <button class="btn-default">삭제</button>
           </div><br>
-          <div style="display: inline;">
+          <div class="manage_element header_elem">
+            <b>---  구분선  ---</b>
+            <button class="btn-default">삭제</button>
+          </div><br>
+          <div class="manage_element">
             남은 기한: <a>00:00:00</a>
-            <button>수정</button>
-            <button>삭제</button>
+            <button class="btn-default">수정</button>
+            <button class="btn-default">삭제</button>
           </div><br>
-          <div class="note">
+          <div class="note manage_element">
             <a>메모지:</a> <textarea></textarea>
-            <button>삭제</button>
+            <button class="btn-default">삭제</button>
           </div><br>
-          <div style="display: inline;">
+          <div class="action_elem manage_element">
             트리거: 
             <select>
               <option>없음</option>
               <option>시간이 되었을 때</option>
-              <option>모든 채크박스가 선택되었을 때</option>
+              <option>모든 토글이 선택되었을 때</option>
             </select>
             <a></a>
             <select>
@@ -93,12 +103,13 @@
               <option>행동: unknown</option>
               <option>행동: undefined</option>
             </select>
-            <button>삭제</button>
+            <button class="btn-default">삭제</button>
           </div>
         </div>
         <div class="footer-chat", id="footer">
           <select id="manage_option">
-            <option>채크 박스</option>
+            <option>구분선</option>
+            <option>토글</option>
             <option>메모지</option>
             <option>카운트 다운</option>
             <option>트리거</option>

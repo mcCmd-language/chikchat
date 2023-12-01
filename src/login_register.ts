@@ -85,7 +85,6 @@ ipcMain.on("register", async (ev, name, id, pw)=>{
         await win.loadFile('./html/login/index.html');
         ev.reply("responseLogin", "register");
     }).catch((x)=>{
-        console.log(x.response);
         if (x.response == undefined) {throw x;}
         if (x.response.status == 409) {
             ev.reply("responseRegister", "already_exist");

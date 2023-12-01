@@ -88,7 +88,7 @@ function updateChatData(msgs_) {
             sendTo: "string",
         },
     ];
-    msg = msgs_.filter((v)=>(v.user.id === selected && !v.isMine) || (v.isMine && v.sendTo === selected));
+    msg = msgs_.filter((v)=>(v.user?.id === selected && !v.isMine) || (v.isMine && v.sendTo === selected));
 
     let showProfile = true;
     let lastResTime = 0;

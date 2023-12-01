@@ -58,9 +58,8 @@ export function createWindow () {
         ChatData.instance.messages.push(eb);
         console.log(ChatData.instance.messages);
 
-        win.webContents.send("responseChatData", {
+        win.webContents.send("responseChatSend", {
             messages: ChatData.instance.messages,
-            users: MainData.instance.users,
         });
     });
 }

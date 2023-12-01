@@ -3,12 +3,14 @@ import { User } from "./user";
 import { win } from "./window";
 import axios from "axios";
 import { api_url } from "./chat";
+import { WebSocket } from "ws";
 
 export class MainData {
     public static instance: MainData = new MainData();
 
     public users: User[] = [];
     public myAccount?: User;
+    public ws?: WebSocket;
 
     addUser(obj: User, isMine: boolean): void;
     addUser(name: string, id:string, description?: string, pw?: string, isMine?: boolean): void;
@@ -52,11 +54,7 @@ ipcMain.on("changeDescrip", async (ev, arg)=>{
       "accid": MainData.instance.myAccount.id,
       "description": encodeURI(arg),
     }
-  }).catch((r)=>{
-    if (r?.response?.status !== 404) {
-      throw r;
-    }
-  });
+  })
 });
 
 ipcMain.on('minimizeApp', ()=>{

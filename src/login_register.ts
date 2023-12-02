@@ -12,6 +12,7 @@ export async function getUsers(callback: (data: User[])=>void) {
         const classList: User[] = [];
         v.data.forEach((element: any) => {
             const user = new User(element["username"],element["accid"],element["description"], undefined, element["image"], [])
+            console.log(element["manage"]);
             element["manage"].forEach((element2: any) => {
                 const m = new Manage(element2["name"], user);
                 element2["elements"].forEach((element2: any) => {
@@ -32,7 +33,6 @@ export async function getUsers(callback: (data: User[])=>void) {
                     me.value = element2["value"]
                     m.elements.push(me);
                 });
-                user.manage.push(m);
             });
             classList.push(user);
         });
@@ -90,6 +90,7 @@ ipcMain.on("login", async (ev, id, pw)=>{
             console.log(ChatData.instance.messages);
         });
     }).catch((x)=>{
+        console.log(x);
         if (x.response == undefined) {throw x;}
         if (x.response.status == 401) {
             ev.reply("responseLogin", "incorrect");

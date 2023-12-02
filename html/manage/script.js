@@ -1,5 +1,7 @@
 ////////////////////// HTML 이벤트 //////////////////////////
 let manages = [];
+let selected = -1;
+
 document.getElementById("add_manage").addEventListener("click", ()=>{
     document.getElementById("add_manage_value").value = "";
     document.querySelector('.modal').style.display = "block";
@@ -21,6 +23,36 @@ document.getElementById("add_manage_true").addEventListener("click", ()=>{
 document.getElementById("search").addEventListener("keyup", (ev)=>{
     const search = document.getElementById("search");
     updateManage(manages.filter((v)=>v.name.includes(search.value)));
+});
+
+document.getElementById("write_message").addEventListener("keypress", (ev)=>{
+    if (ev.key !== "Enter") return;
+
+    const value = document.getElementById("write_message").value;
+
+    const option = document.getElementById("manage_option").value;
+
+    if (value.trim().length < 1) {
+        ev.returnValue = false;
+
+        return;
+    }
+
+    ipcRenderer.send("add_manageElement", option, encodeURI(value), selected);
+});
+
+document.getElementById("add_element").addEventListener("click", ()=>{
+    const value = document.getElementById("write_message").value;
+
+    const option = document.getElementById("manage_option").value;
+
+    if (value.trim().length < 1) {
+        ev.returnValue = false;
+
+        return;
+    }
+
+    ipcRenderer.send("add_manageElement", option, encodeURI(value), selected);
 });
 
 ////////////////////// ELECTRON 통신 //////////////////////////
@@ -53,9 +85,20 @@ ipcRenderer.on("responseRemoveManage", (ev, arg)=>{
     ];
     response = arg;
 
-    console.log("remove");
+    manages = response;
 
     updateManage(response);
+});
+
+ipcRenderer.on("responseAddElement", (ev, arg)=>{
+    let response = [
+        IManage,
+    ];
+    response = arg;
+
+    manages = response;
+
+    updateManageElement(response[selected].elements);
 });
 
 ////////////////////// HTML 렌더링 //////////////////////////
@@ -107,11 +150,20 @@ function updateManage(manages_) {
 
         btn.addEventListener("click", ()=>{
             deleted = true;
+
+            if (i === selected) {
+                selected = -1;
+
+                updateManageElement([]);
+                document.getElementById("calName").innerHTML = "일정 정보";
+            }
             ipcRenderer.send("requestRemoveManage", i);
         });
 
         discuss.addEventListener("click", ()=>{
             if (deleted) return;
+
+            selected = i;
             updateManageElement(v.elements);
 
             document.getElementById("calName").innerHTML = name_;
@@ -128,7 +180,48 @@ function updateManageElement(elements_) {
     let elements = [IManageElement];
     elements = elements_;
 
-    elements.forEach((v)=>{
+    elements.forEach((v, i)=>{
+        const elem = document.createElement("div");
+        elem.className = "manage_element";
+
+        content.appendChild(elem);
+
+        if (v.type === "toggle") {
+            elem.className += " toggle_elem";
+            const toggle = document.createElement("input");
+            toggle.type = "checkbox";
+
+            toggle.checked = v.value;
+
+            elem.appendChild(toggle);
+            elem.innerHTML += ` ${v.name}`;
+        }
+        else if (v.type === "input") {
+            elem.className += " note";
+            const name = document.createElement("a");
+            elem.appendChild(name);
+            name.innerHTML = `${v.name}: `;
+
+            const note = document.createElement("textarea");
+            elem.appendChild(note);
+            note.value = v.value;
+        }
+        else if (v.type === "header") {
+            elem.className += " header_elem";
+
+            const header = document.createElement("b");
+            elem.appendChild(header);
+
+            header.innerHTML = `---  ${v.name}  ---`;
+        }
+
+        const remove = document.createElement("button");
+        remove.className = "btn-default";
+
+        elem.appendChild(remove);
+        remove.innerHTML = "삭제";
+
+        content.appendChild(document.createElement("br"));
     });
 }
 

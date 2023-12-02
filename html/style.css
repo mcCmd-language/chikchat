@@ -572,6 +572,10 @@ body {
   border: 0;
 }
 
+.toggle_elem button {
+  margin-left: 20px;
+}
+
 .header_elem b {
   font-size: 2em;
   margin-left: 30%;
@@ -620,6 +624,8 @@ body {
   width: 70px;
   font-size: 15px;
 }
+
+
 
 #manages button:hover {
   background-color:#C0C0C0;

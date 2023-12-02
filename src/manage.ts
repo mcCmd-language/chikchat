@@ -56,29 +56,71 @@ ipcMain.on("requestManageData", async (ev)=>{
 ipcMain.on("request_addManage", async (ev, arg)=>{
     new Manage(encodeURI(arg), MainData.instance.myAccount!);
 
-    await updateManageData();
-
     ev.reply("responseAddManage", MainData.instance.myAccount?.manage);
+
+    await updateManageData();
 });
 
 ipcMain.on("requestRemoveManage", async (ev, arg)=>{
     MainData.instance.myAccount?.manage.splice(arg, 1);
 
-    await updateManageData();
-
     ev.reply("responseRemoveManage", MainData.instance.myAccount?.manage);
+
+    await updateManageData();
+});
+
+ipcMain.on("add_manageElement", async (ev, option, name, i)=>{
+    if (option === "toggle") {
+        MainData.instance.myAccount?.manage[i]
+            .elements.push(
+            new ToggleElement(name),
+        );
+    }
+    else if (option === "input") {
+        MainData.instance.myAccount?.manage[i]
+        .elements.push(
+            new InputElement(name),
+        );
+    }
+    else if (option === "timer") {
+        MainData.instance.myAccount?.manage[i]
+        .elements.push(
+            new TimerElement(name),
+        );
+    }
+    else if (option === "trigger") {
+        MainData.instance.myAccount?.manage[i]
+        .elements.push(
+            new TriggerElement(name),
+        );
+    }
+    else if (option === "header") {
+        const elem = new ManageElement(name);
+        elem.type = "header";
+        elem.value = name;
+        
+        MainData.instance.myAccount?.manage[i]
+        .elements.push(
+            elem,
+        );
+    }
+
+    ev.reply("responseAddElement", MainData.instance.myAccount?.manage);
+
+    await updateManageData();
 });
 
 ///////////////// 데이터 관리 ///////////////////
 async function updateManageData() {
     const myAccountstr = MainData.instance.myAccount?.manage;
     if (myAccountstr === null) {
-        throw TypeError()
+        throw TypeError();
     }
-    console.warn(JSON.stringify(myAccountstr))
+    console.warn(JSON.stringify(myAccountstr));
+
     await axios.post(api_url + "/update_manage", {}, {headers: {
-        accid: MainData.instance.myAccount?.name,
-        manage: JSON.stringify(myAccountstr)
+        accid: MainData.instance.myAccount?.id,
+        manage: JSON.stringify(myAccountstr),
     }});
 
     return;

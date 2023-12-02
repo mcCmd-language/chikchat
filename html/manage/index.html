@@ -81,16 +81,16 @@
             <b>---  구분선  ---</b>
             <button class="btn-default">삭제</button>
           </div><br>
-          <div class="manage_element timedown">
-            남은 기한: <a>00:00:00</a>
-            <button class="btn-default">수정</button>
-            <button class="btn-default">삭제</button>
-          </div><br>
           <div class="note manage_element">
             <a>메모지:</a> <textarea></textarea>
             <button class="btn-default">삭제</button>
           </div><br>
-          <div class="action_elem manage_element">
+          <!-- <div class="manage_element timedown">
+            남은 기한: <a>00:00:00</a>
+            <button class="btn-default">수정</button>
+            <button class="btn-default">삭제</button>
+          </div><br> -->
+          <!-- <div class="action_elem manage_element">
             트리거: 
             <select>
               <option>없음</option>
@@ -104,15 +104,15 @@
               <option>행동: undefined</option>
             </select>
             <button class="btn-default">삭제</button>
-          </div>
+          </div> -->
         </div>
         <div class="footer-chat", id="footer">
           <select id="manage_option">
             <option value="header">구분선</option>
             <option value="toggle">토글</option>
-            <option value="note">메모지</option>
+            <option value="input">메모지</option>
             <option value="timer">카운트 다운</option>
-            <option value="trigger">트리거</option>
+            <!-- <option value="trigger">트리거</option> -->
           </select>
           <textarea class="write-message" placeholder="일정 요소 추가" id="write_message"></textarea>
           <i class="icon send fa fa-circle-plus clickable" aria-hidden="true" id="add_element"></i>

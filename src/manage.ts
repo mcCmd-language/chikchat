@@ -2,6 +2,8 @@ import { ipcMain } from "electron";
 import { win } from "./window";
 import { User } from "./user";
 import { MainData } from "./main";
+import axios from "axios";
+import { api_url } from "./chat";
 
 export class ManageElement {
     constructor (
@@ -69,7 +71,15 @@ ipcMain.on("requestRemoveManage", async (ev, arg)=>{
 
 ///////////////// 데이터 관리 ///////////////////
 async function updateManageData() {
-    //myAccount.manage 데이터를 서버의 myAccount에 갱신
+    const myAccountstr = MainData.instance.myAccount?.manage;
+    if (myAccountstr === null) {
+        throw TypeError()
+    }
+    console.warn(JSON.stringify(myAccountstr))
+    await axios.post(api_url + "/update_manage", {}, {headers: {
+        accid: MainData.instance.myAccount?.name,
+        manage: JSON.stringify(myAccountstr)
+    }});
 
     return;
 }

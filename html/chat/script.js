@@ -70,6 +70,21 @@ ipcRenderer.on("responseChatSend", (ev, arg1)=>{
 const content = document.getElementById("chat_content");
 const connectedUsers = document.getElementById("connected_users");
 
+//문자열에 링크를 자동으로 하이퍼링크로 변환
+function linkify(inputText) {
+    let replacedText, replacePattern1, replacePattern2, replacePattern3;
+
+    replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+
+    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+
+    replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+    replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+
+    return replacedText;
+}
 
 function updateChatData(msgs_) {
     content.innerHTML = "";
@@ -166,6 +181,7 @@ function updateChatData(msgs_) {
                 message.appendChild(text);
             }
         }
+
         let msg_ = "";
 
         try {
@@ -173,7 +189,8 @@ function updateChatData(msgs_) {
         } catch {
             msg_ = v.msg;
         }
-        text.innerHTML = msg_;
+
+        text.innerHTML = linkify(msg_)  ;
     });
 }
 
@@ -192,6 +209,8 @@ function updateUsers(users_) {
             document.getElementById("chatName").innerHTML = v.name;
 
             updateChatData(chatData);
+
+            content.scrollTo(0, content.scrollHeight);
         });
         
         //프로필 사진

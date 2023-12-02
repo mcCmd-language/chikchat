@@ -3,6 +3,7 @@ import path from "path";
 import { MainData } from "./main";
 import WebSocket from "ws";
 import { api_url, ChatData } from "./chat";
+import { sendNoti } from "./notification";
 
 export let win:BrowserWindow;
 
@@ -41,9 +42,9 @@ export function createWindow () {
             return;
         }
         if (MainData.instance.myAccount?.id === e["from"]) {return;}
-        console.log(1);
+        const user = MainData.instance.users.find((x)=>{return e["from"] == x.id});
         const eb = {
-            user: MainData.instance.users.filter((x)=>{return e["from"] == x.id})[0],
+            user: user!,
             msg: e["content"],
             time: e["time"],
             sendTo: e["to"],
@@ -56,7 +57,15 @@ export function createWindow () {
             }
         }
         ChatData.instance.messages.push(eb);
-        console.log(ChatData.instance.messages);
+        
+        if (user) {
+            sendNoti("message", user.decode().name, e["content"], ()=>{
+                win.webContents.send("responseChatData", {
+                    users: MainData.instance.users.map((v)=>v.withoutPw().decode()),
+                    messages: ChatData.instance.messages,
+                }, MainData.instance.myAccount!.decode().id);
+            });
+        }
 
         win.webContents.send("responseChatSend", {
             messages: ChatData.instance.messages,

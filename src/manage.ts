@@ -60,7 +60,7 @@ ipcMain.on("request_addManage", async (ev, arg)=>{
 });
 
 ipcMain.on("requestRemoveManage", async (ev, arg)=>{
-    MainData.instance.users.splice(arg, 1);
+    MainData.instance.myAccount?.manage.splice(arg, 1);
 
     await updateManageData();
 

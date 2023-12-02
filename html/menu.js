@@ -17,3 +17,11 @@ ipcRenderer.on("responseChatData", (ev, arg1)=>{
     Users = response.users;
     updateUsers(response.users);
 });
+
+document.getElementById("search_user_button").addEventListener("mousedown", ()=>{
+    location.href = "../404/index.html";
+});
+
+document.getElementById("setting_button").addEventListener("mousedown", ()=>{
+    location.href = "../404/index.html";
+});

@@ -1,4 +1,5 @@
 ////////////////////// HTML 이벤트 //////////////////////////
+let manages = [];
 document.getElementById("add_manage").addEventListener("click", ()=>{
     document.getElementById("add_manage_value").value = "";
     document.querySelector('.modal').style.display = "block";
@@ -11,16 +12,37 @@ document.getElementById("add_manage_false").addEventListener("click", ()=>{
 document.getElementById("add_manage_true").addEventListener("click", ()=>{
     const value = document.getElementById("add_manage_value").value;
 
+    if (value.length < 1) value = "새 일정";
+
     ipcRenderer.send("request_addManage", value);
     document.querySelector('.modal').style.display = "none";
 });
 
+document.getElementById("search").addEventListener("keyup", (ev)=>{
+    const search = document.getElementById("search");
+    updateManage(manages.filter((v)=>v.name.includes(search.value)));
+});
+
 ////////////////////// ELECTRON 통신 //////////////////////////
+ipcRenderer.on("responseManageData", (ev, arg)=>{
+    let response = [
+        IManage,
+    ];
+    response = arg;
+
+    manages = response;
+
+    updateManage(response);
+    //content.innerHTML = "";
+});
+
 ipcRenderer.on("responseAddManage", (ev, arg)=>{
     let response = [
         IManage,
     ];
     response = arg;
+
+    manages = response;
 
     updateManage(response);
 });
@@ -30,6 +52,8 @@ ipcRenderer.on("responseRemoveManage", (ev, arg)=>{
         IManage,
     ];
     response = arg;
+
+    console.log("remove");
 
     updateManage(response);
 });
@@ -100,6 +124,7 @@ function updateManage(manages_) {
  * @param {Array} elements_ 일정의 요소 데이터
  */
 function updateManageElement(elements_) {
+    content.innerHTML = "";
     let elements = [IManageElement];
     elements = elements_;
 

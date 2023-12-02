@@ -21,3 +21,15 @@ ipcRenderer.on("after_maximize", (ev, arg1)=>{
 document.getElementById("close_window").addEventListener("click", ()=>{
     ipcRenderer.send('closeApp');
 });
+
+ipcRenderer.on("notification", (ev, id, title, body)=>{
+    const noti = new Notification(title, {
+        body: body,
+    });
+
+    noti.addEventListener("click", ()=>{
+        ipcRenderer.send("responseNoti", id);
+    });
+    
+});
+

@@ -3,3 +3,4 @@ import "./main";
 import "./chat";
 import "./login_register";
 import "./manage";
+import "./notification";

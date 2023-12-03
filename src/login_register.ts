@@ -27,7 +27,9 @@ export async function getUsers(callback: (data: User[])=>void) {
                         case "trigger":
                             me = new TriggerElement(element2["name"]); break;
                         default:
-                            throw TypeError("invaild manageelement type")
+                            me = new ManageElement(element2["name"]);
+                            me.type = element2["type"];
+                            me.value = element2["value"];
                     }
                     me.type = element2["type"]
                     me.value = element2["value"]
@@ -40,6 +42,7 @@ export async function getUsers(callback: (data: User[])=>void) {
     })
 }
 
+//로그인
 ipcMain.on("login", async (ev, id, pw)=>{
     await getUsers((d)=>{console.log(d);MainData.instance.users = d;})
     const user = MainData.instance.users.find((v)=> v.id === id);

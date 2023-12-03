@@ -39,6 +39,8 @@ document.getElementById("write_message").addEventListener("keypress", (ev)=>{
     }
 
     ipcRenderer.send("add_manageElement", option, encodeURI(value), selected);
+
+    document.getElementById("write_message").value = "";
 });
 
 document.getElementById("add_element").addEventListener("click", ()=>{
@@ -53,6 +55,8 @@ document.getElementById("add_element").addEventListener("click", ()=>{
     }
 
     ipcRenderer.send("add_manageElement", option, encodeURI(value), selected);
+
+    document.getElementById("write_message").value = "";
 });
 
 ////////////////////// ELECTRON 통신 //////////////////////////
@@ -65,7 +69,7 @@ ipcRenderer.on("responseManageData", (ev, arg)=>{
     manages = response;
 
     updateManage(response);
-    //content.innerHTML = "";
+    content.innerHTML = "";
 });
 
 ipcRenderer.on("responseAddManage", (ev, arg)=>{
@@ -90,7 +94,7 @@ ipcRenderer.on("responseRemoveManage", (ev, arg)=>{
     updateManage(response);
 });
 
-ipcRenderer.on("responseAddElement", (ev, arg)=>{
+ipcRenderer.on("responseElement", (ev, arg)=>{
     let response = [
         IManage,
     ];
@@ -164,7 +168,7 @@ function updateManage(manages_) {
             if (deleted) return;
 
             selected = i;
-            updateManageElement(v.elements);
+            updateManageElement(manages[selected]);
 
             document.getElementById("calName").innerHTML = name_;
         });
@@ -194,17 +198,26 @@ function updateManageElement(elements_) {
             toggle.checked = v.value;
 
             elem.appendChild(toggle);
-            elem.innerHTML += ` ${v.name}`;
+
+            elem.innerHTML += ` ${decodeURI(v.name)}`;
+
+            toggle.addEventListener("change", ()=>{
+                ipcRenderer.send("changeManage", selected, i, "toggle", toggle.checked);
+            });
         }
         else if (v.type === "input") {
             elem.className += " note";
             const name = document.createElement("a");
             elem.appendChild(name);
-            name.innerHTML = `${v.name}: `;
+            name.innerHTML = `${decodeURI(v.name)}: `;
 
             const note = document.createElement("textarea");
             elem.appendChild(note);
-            note.value = v.value;
+            note.value = decodeURI(v.value);
+
+            note.addEventListener("change", ()=>{
+                ipcRenderer.send("changeManage", selected, i, "input", encodeURI(note.value));
+            });
         }
         else if (v.type === "header") {
             elem.className += " header_elem";
@@ -212,7 +225,7 @@ function updateManageElement(elements_) {
             const header = document.createElement("b");
             elem.appendChild(header);
 
-            header.innerHTML = `---  ${v.name}  ---`;
+            header.innerHTML = `---  ${decodeURI(v.name)}  ---`;
         }
 
         const remove = document.createElement("button");
@@ -222,6 +235,10 @@ function updateManageElement(elements_) {
         remove.innerHTML = "삭제";
 
         content.appendChild(document.createElement("br"));
+
+        remove.addEventListener("click", ()=>{
+            ipcRenderer.send("removeManageElement", selected, i);
+        });
     });
 }
 

@@ -105,7 +105,33 @@ ipcMain.on("add_manageElement", async (ev, option, name, i)=>{
         );
     }
 
-    ev.reply("responseAddElement", MainData.instance.myAccount?.manage);
+    ev.reply("responseElement", MainData.instance.myAccount?.manage);
+
+    await updateManageData();
+});
+
+ipcMain.on("changeManage", async (ev, selected, index, type, value)=>{
+    console.log(type + " " + value);
+    if (!MainData.instance.myAccount) return;
+
+    if (type === "toggle") {
+        MainData.instance.myAccount.manage[selected].elements[index].value = value;
+    }
+    else if (type === "input") {
+        MainData.instance.myAccount.manage[selected].elements[index].value = value;
+    }
+
+    ev.reply("responseElement", MainData.instance.myAccount?.manage);
+
+    await updateManageData();
+});
+
+ipcMain.on("removeManageElement", async (ev, selected, index)=>{
+    if (!MainData.instance.myAccount) return;
+
+    MainData.instance.myAccount.manage[selected].elements.splice(index, 1);
+
+    ev.reply("responseElement", MainData.instance.myAccount?.manage);
 
     await updateManageData();
 });

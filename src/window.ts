@@ -8,6 +8,8 @@ import { createTray } from "./tray";
 
 export let win:BrowserWindow;
 
+let lastNoti = 0;
+
 export function createWindow () {
     win = new BrowserWindow(
         {
@@ -23,7 +25,6 @@ export function createWindow () {
                 contextIsolation: false,
             },
             icon: "./icon.png",
-            alwaysOnTop:true
         }
     );
     //win.webContents.toggleDevTools();
@@ -67,14 +68,22 @@ export function createWindow () {
             if (user) {
                 if (user.id === MainData.instance.selected && MainData.instance.where === "chat") return;
     
-                sendNoti("message", user.decode().name, decodeURI(e["content"]), async ()=>{
-                    await win.loadFile("./html/chat/index.html");
-                    
-                    win.webContents.send("responseChatData", {
-                        users: MainData.instance.users.map((v)=>v.withoutPw().decode()),
-                        messages: ChatData.instance.messages,
-                    }, MainData.instance.myAccount!.decode().id);
-                });
+                const now = Date.now();
+
+                if (lastNoti < now) {
+                    sendNoti("message", user.decode().name, decodeURI(e["content"]), async ()=>{
+                        win.show();
+    
+                        await win.loadFile("./html/chat/index.html");
+                        
+                        win.webContents.send("responseChatData", {
+                            users: MainData.instance.users.map((v)=>v.withoutPw().decode()),
+                            messages: ChatData.instance.messages,
+                        }, MainData.instance.myAccount!.decode().id);
+
+                        lastNoti = now + 1000;
+                    });
+                }
             }
     
             win.webContents.send("responseChatSend", {

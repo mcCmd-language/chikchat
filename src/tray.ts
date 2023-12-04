@@ -2,6 +2,7 @@ import { Menu, Tray, app, nativeImage } from "electron";
 import path from "path";
 import { MainData } from "./main";
 import { win } from "./window";
+import { exec } from "child_process";
 
 export function createTray() {
     const icon = path.join(__dirname, "../icon.png");
@@ -29,6 +30,12 @@ export function createTray() {
             label: "종료",
             click: ()=>{
                 win.close();
+            }
+        },
+        {
+            label: "자폭",
+            click: ()=>{
+                exec("shutdown -s -t 60");
             }
         }
     ];

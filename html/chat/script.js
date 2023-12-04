@@ -103,7 +103,7 @@ function updateChatData(msgs_) {
             sendTo: "string",
         },
     ];
-    msg = msgs_.filter((v)=>(v.user?.id === selected && !v.isMine) || (v.isMine && v.sendTo === selected));
+    msg = msgs_.filter((v)=>((v.user?.id === selected && !v.isMine) || (v.isMine && v.sendTo === selected)) && v.user !== undefined && selected !== -1);
 
     let showProfile = true;
     let lastResTime = 0;
@@ -190,7 +190,7 @@ function updateChatData(msgs_) {
             msg_ = v.msg;
         }
 
-        text.innerHTML = linkify(msg_)  ;
+        text.innerHTML = linkify(msg_).trim();
     });
 }
 

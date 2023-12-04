@@ -1,9 +1,10 @@
-import { ipcMain } from "electron";
+import { Tray, app, ipcMain } from "electron";
 import { User } from "./user";
 import { win } from "./window";
 import axios from "axios";
 import { api_url } from "./chat";
 import { WebSocket } from "ws";
+import { createTray } from "./tray";
 
 export class MainData {
     public static instance: MainData = new MainData();
@@ -13,6 +14,7 @@ export class MainData {
     public ws?: WebSocket;
     public selected?: string;
     public where: string = "home";
+    public tray: Tray | null = null;
 
     addUser(obj: User, isMine: boolean): void;
     addUser(name: string, id:string, description?: string, pw?: string, isMine?: boolean): void;
@@ -45,6 +47,8 @@ ipcMain.on("logout", async ()=>{
   await win.loadFile("./html/login/index.html");
   
   MainData.instance.myAccount = undefined;
+
+  createTray();
 });
 
 ipcMain.on("changeDescrip", async (ev, arg)=>{
@@ -77,5 +81,9 @@ ipcMain.on('maximizeApp', (ev)=>{
 });
 
 ipcMain.on('closeApp', ()=>{
-  win.close();
+  if (MainData.instance.myAccount) {
+    win.hide();
+  } else {
+    win.close();
+  }
 });

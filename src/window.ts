@@ -4,6 +4,7 @@ import { MainData } from "./main";
 import WebSocket from "ws";
 import { api_url, ChatData } from "./chat";
 import { sendNoti } from "./notification";
+import { createTray } from "./tray";
 
 export let win:BrowserWindow;
 
@@ -20,7 +21,9 @@ export function createWindow () {
             webPreferences: {
                 nodeIntegration: true,
                 contextIsolation: false,
-            }
+            },
+            icon: "./icon.png",
+            alwaysOnTop:true
         }
     );
     //win.webContents.toggleDevTools();
@@ -28,51 +31,55 @@ export function createWindow () {
     win.setMenu(null);
     win.loadFile('./html/login/index.html');
 
-    MainData.instance.ws = new WebSocket(api_url + "/ws");
-    MainData.instance.ws.on("open", ()=>{console.log("open");})
-    MainData.instance.ws.on("message", (a)=>{
-        console.log(a.toString());
-        let e:Record<string, any> = {};
-        try {
-            e = JSON.parse(a.toString());
-            console.log(e);
-        } catch(x) {
-            console.error(x);
+    createTray();
 
-            return;
-        }
-        if (MainData.instance.myAccount?.id === e["from"]) {return;}
-        const user = MainData.instance.users.find((x)=>{return e["from"] == x.id});
-        const eb = {
-            user: user!,
-            msg: e["content"],
-            time: e["time"],
-            sendTo: e["to"],
-            isMine: false
-        };
-        if (eb.user) {
-            if (eb.user.id == MainData.instance.myAccount?.id) {
-                console.log(-1);
+    if (!MainData.instance.ws) {
+        MainData.instance.ws = new WebSocket(api_url + "/ws");
+        MainData.instance.ws.on("open", ()=>{console.log("open");})
+        MainData.instance.ws.on("message", (a)=>{
+            console.log(a.toString());
+            let e:Record<string, any> = {};
+            try {
+                e = JSON.parse(a.toString());
+                console.log(e);
+            } catch(x) {
+                console.error(x);
+    
                 return;
             }
-        }
-        ChatData.instance.messages.push(eb);
-        
-        if (user) {
-            if (user.id === MainData.instance.selected && MainData.instance.where === "chat") return;
-
-            sendNoti("message", user.decode().name, decodeURI(e["content"]), async ()=>{
-                await win.loadFile("./html/chat/index.html");
-                
-                win.webContents.send("responseChatData", {
-                    users: MainData.instance.users.map((v)=>v.withoutPw().decode()),
-                    messages: ChatData.instance.messages,
-                }, MainData.instance.myAccount!.decode().id);
+            if (MainData.instance.myAccount?.id === e["from"]) {return;}
+            const user = MainData.instance.users.find((x)=>{return e["from"] == x.id});
+            const eb = {
+                user: user!,
+                msg: e["content"],
+                time: e["time"],
+                sendTo: e["to"],
+                isMine: false
+            };
+            if (eb.user) {
+                if (eb.user.id == MainData.instance.myAccount?.id) {
+                    console.log(-1);
+                    return;
+                }
+            }
+            ChatData.instance.messages.push(eb);
+            
+            if (user) {
+                if (user.id === MainData.instance.selected && MainData.instance.where === "chat") return;
+    
+                sendNoti("message", user.decode().name, decodeURI(e["content"]), async ()=>{
+                    await win.loadFile("./html/chat/index.html");
+                    
+                    win.webContents.send("responseChatData", {
+                        users: MainData.instance.users.map((v)=>v.withoutPw().decode()),
+                        messages: ChatData.instance.messages,
+                    }, MainData.instance.myAccount!.decode().id);
+                });
+            }
+    
+            win.webContents.send("responseChatSend", {
+                messages: ChatData.instance.messages,
             });
-        }
-
-        win.webContents.send("responseChatSend", {
-            messages: ChatData.instance.messages,
         });
-    });
+    }
 }

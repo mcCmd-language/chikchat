@@ -12,7 +12,7 @@ document.getElementById("add_manage_false").addEventListener("click", ()=>{
 });
 
 document.getElementById("add_manage_true").addEventListener("click", ()=>{
-    const value = document.getElementById("add_manage_value").value;
+    let value = document.getElementById("add_manage_value").value;
 
     if (value.length < 1) value = "새 일정";
 

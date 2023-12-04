@@ -1,6 +1,6 @@
 {
   "name": "chikchat",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "chat app",
   "main": "./bin/index.js",
   "author": "minyee2913, misilelab",
@@ -9,7 +9,8 @@
   "scripts": {
     "compile": "tsc",
     "start": "tsc && npx electron .",
-    "deploy":"electron-builder --windows nsis:ia32"
+    "deploy":"electron-builder --windows nsis:ia32",
+    "deploy:mac":"electron-builder --mac"
   },
   "build": {
     "productName": "ChikChat",
@@ -26,7 +27,7 @@
         "zip",
         "nsis"
       ],
-      "icon": "./resources/installer/Icon.ico"
+      "icon": "./icon.png"
     },
     "nsis": {
       "oneClick": false,

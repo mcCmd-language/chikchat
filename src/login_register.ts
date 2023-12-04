@@ -5,6 +5,7 @@ import { User } from "./user";
 import { ChatData, api_url, message } from "./chat";
 import axios from "axios";
 import { InputElement, Manage, ManageElement, TimerElement, ToggleElement, TriggerElement } from "./manage";
+import { createTray } from "./tray";
 
 export async function getUsers(callback: (data: User[])=>void) {
     await axios.get(api_url + "/users").then((v)=>{
@@ -61,6 +62,8 @@ ipcMain.on("login", async (ev, id, pw)=>{
         MainData.instance.myAccount = user;
 
         await win.loadFile('./html/home/index.html');
+
+        createTray();
 
         ev.reply("responseHomeData", MainData.instance.myAccount.decode());
 

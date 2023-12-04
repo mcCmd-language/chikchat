@@ -1,6 +1,6 @@
 {
   "name": "chikchat",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "chat app",
   "main": "./bin/index.js",
   "author": "minyee2913, misilelab",

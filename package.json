@@ -9,13 +9,34 @@
   "scripts": {
     "compile": "tsc",
     "start": "tsc && npx electron .",
-    "build:osx": "electron-builder --mac",
-    "build:linux": "npm run build:linux32 && npm run build:linux64",
-    "build:linux32": "electron-builder --linux --ia32",
-    "build:linux64": "electron-builder --linux --x64",
-    "build:win": "npm run build:win32 && npm run build:win64",
-    "build:win32": "electron-builder --win portable --ia32",
-    "build:win64": "electron-builder --win portable --x64"
+    "deploy":"electron-builder --windows nsis:ia32"
+  },
+  "build": {
+    "productName": "ChikChat",
+    "appId": "com.nolinux.chikchat",
+    "asar": true,
+    "protocols": {
+      "name": "ChikChat",
+      "schemes": [
+        "ChikChat"
+      ]
+    },
+    "win": {
+      "target": [
+        "zip",
+        "nsis"
+      ],
+      "icon": "./resources/installer/Icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "directories": {
+      "buildResources": "./resources/installer/",
+      "output": "./dist/",
+      "app": "."
+    }
   },
   "dependencies": {
     "@joeattardi/emoji-button": "^4.6.4",

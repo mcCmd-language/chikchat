@@ -11,8 +11,7 @@ document.getElementById("chat_button").addEventListener("mousedown", ()=>{
 });
 
 ipcRenderer.on("responseChatData", (ev, arg1)=>{
-    let response = IchatResponse;
-    response = arg1;
+    let response = arg1;
 
     Users = response.users;
     updateUsers(response.users);

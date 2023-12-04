@@ -102,7 +102,7 @@ ipcRenderer.on("responseElement", (ev, arg)=>{
 
     manages = response;
 
-    updateManageElement(response[selected].elements);
+    updateManageElement(manages[selected].elements);
 });
 
 ////////////////////// HTML 렌더링 //////////////////////////
@@ -116,12 +116,12 @@ const content = document.getElementById("content");
  */
 function updateManage(manages_) {
     section.innerHTML = "";
-    let manages = [
+    let manage = [
         IManage,
     ];
-    manages = manages_;
+    manage = manages_;
 
-    manages.forEach((v, i)=>{
+    manage.forEach((v, i)=>{
         const discuss = document.createElement("div");
         discuss.className = "discussion clickable";
 
@@ -168,7 +168,7 @@ function updateManage(manages_) {
             if (deleted) return;
 
             selected = i;
-            updateManageElement(manages[selected]);
+            updateManageElement(manages[selected].elements);
 
             document.getElementById("calName").innerHTML = name_;
         });
@@ -190,18 +190,21 @@ function updateManageElement(elements_) {
 
         content.appendChild(elem);
 
+        let toggle, note;
+
         if (v.type === "toggle") {
             elem.className += " toggle_elem";
-            const toggle = document.createElement("input");
+            toggle = document.createElement("input");
             toggle.type = "checkbox";
-
-            toggle.checked = v.value;
 
             elem.appendChild(toggle);
 
             elem.innerHTML += ` ${decodeURI(v.name)}`;
 
-            toggle.addEventListener("change", ()=>{
+            elem.querySelector("input").checked = v.value;
+
+            elem.querySelector("input").addEventListener("change", ()=>{
+                toggle.checked = !toggle.checked;
                 ipcRenderer.send("changeManage", selected, i, "toggle", toggle.checked);
             });
         }
@@ -211,11 +214,12 @@ function updateManageElement(elements_) {
             elem.appendChild(name);
             name.innerHTML = `${decodeURI(v.name)}: `;
 
-            const note = document.createElement("textarea");
+            note = document.createElement("textarea");
             elem.appendChild(note);
-            note.value = decodeURI(v.value);
+            
+            elem.querySelector("textarea").value = decodeURI(v.value);
 
-            note.addEventListener("change", ()=>{
+            elem.querySelector("textarea").addEventListener("change", ()=>{
                 ipcRenderer.send("changeManage", selected, i, "input", encodeURI(note.value));
             });
         }
@@ -225,7 +229,7 @@ function updateManageElement(elements_) {
             const header = document.createElement("b");
             elem.appendChild(header);
 
-            header.innerHTML = `---  ${decodeURI(v.name)}  ---`;
+            header.innerHTML = `--  ${decodeURI(v.name)}  --`;
         }
 
         const remove = document.createElement("button");

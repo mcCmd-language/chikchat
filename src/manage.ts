@@ -48,6 +48,7 @@ export class Manage {
 ///////////////// ELECTRON 통신 ///////////////////////
 
 ipcMain.on("requestManageData", async (ev)=>{
+    MainData.instance.where = "manage";
     await win.loadFile("./html/manage/index.html");
 
     ev.reply("responseManageData", MainData.instance.myAccount?.manage);
@@ -121,7 +122,7 @@ ipcMain.on("changeManage", async (ev, selected, index, type, value)=>{
         MainData.instance.myAccount.manage[selected].elements[index].value = value;
     }
 
-    ev.reply("responseElement", MainData.instance.myAccount?.manage);
+    //ev.reply("responseElement", MainData.instance.myAccount?.manage);
 
     await updateManageData();
 });

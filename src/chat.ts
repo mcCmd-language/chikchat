@@ -23,6 +23,7 @@ export class ChatData {
 }
 
 ipcMain.on("requestChatData", async (ev)=>{
+    MainData.instance.where = "chat";
     await win.loadFile("./html/chat/index.html");
 
     ev.reply("responseChatData", {
@@ -59,4 +60,8 @@ ipcMain.on("requestChatSend", async (ev, arg)=>{
             },
         },
     );
+});
+
+ipcMain.on("selectUserchat", (ev, selected)=>{
+    MainData.instance.selected = selected;
 });

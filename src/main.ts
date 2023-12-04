@@ -11,6 +11,8 @@ export class MainData {
     public users: User[] = [];
     public myAccount?: User;
     public ws?: WebSocket;
+    public selected?: string;
+    public where: string = "home";
 
     addUser(obj: User, isMine: boolean): void;
     addUser(name: string, id:string, description?: string, pw?: string, isMine?: boolean): void;
@@ -34,8 +36,9 @@ export class MainData {
 }
 
 ipcMain.on("requestHomeData", async (ev)=>{
-    await win.loadFile("./html/home/index.html");
-    ev.reply("responseHomeData", MainData.instance.myAccount?.decode());
+  MainData.instance.where = "home";
+  await win.loadFile("./html/home/index.html");
+  ev.reply("responseHomeData", MainData.instance.myAccount?.decode());
 });
 
 ipcMain.on("logout", async ()=>{

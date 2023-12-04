@@ -23,7 +23,7 @@ export function createWindow () {
             }
         }
     );
-    win.webContents.toggleDevTools();
+    //win.webContents.toggleDevTools();
 
     win.setMenu(null);
     win.loadFile('./html/login/index.html');
@@ -59,7 +59,11 @@ export function createWindow () {
         ChatData.instance.messages.push(eb);
         
         if (user) {
-            sendNoti("message", user.decode().name, e["content"], ()=>{
+            if (user.id === MainData.instance.selected && MainData.instance.where === "chat") return;
+
+            sendNoti("message", user.decode().name, decodeURI(e["content"]), async ()=>{
+                await win.loadFile("./html/chat/index.html");
+                
                 win.webContents.send("responseChatData", {
                     users: MainData.instance.users.map((v)=>v.withoutPw().decode()),
                     messages: ChatData.instance.messages,

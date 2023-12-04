@@ -211,6 +211,8 @@ function updateUsers(users_) {
             updateChatData(chatData);
 
             content.scrollTo(0, content.scrollHeight);
+
+            ipcRenderer.send("selectUserchat", selected);
         });
         
         //프로필 사진
